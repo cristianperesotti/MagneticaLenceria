@@ -527,21 +527,15 @@
     }
     /* --- FIN CAMBIO --- */
   </style>
-
-<header>
-  <h1>Demo Webix</h1>
-  <p>Experiencia culinaria excepcional con los mejores sabores artesanales</p>
-</header>
-
+  
 <section>
-  <h2 class="section-title">Nuestro Menú</h2>
+  <h2 class="section-title">Nuestros Productos</h2>
 
   <div class="category-filters">
     <button class="active" onclick="filterProducts('all', this)">Todos</button>
-    <button onclick="filterProducts('pizzas', this)">Pizzas</button>
-    <button onclick="filterProducts('hamburguesas', this)">Hamburguesas</button>
-    <button onclick="filterProducts('bebidas', this)">Bebidas</button>
-    <button onclick="filterProducts('postres', this)">Postres</button>
+    <button onclick="filterProducts('Bodys', this)">Bodys</button>
+    <button onclick="filterProducts('Lencería', this)">Lencería</button>
+    <button onclick="filterProducts('Bikinis', this)">Bikinis</button>
   </div>
 
   <div id="productList" class="product-list"></div>
@@ -558,7 +552,7 @@
 
     <div class="delivery-options">
       <h3>Opciones de Entrega</h3>
-      <label><input type="radio" name="deliveryOption" value="retiro" checked onchange="toggleAddress()"> 🏪 Retiro por local</label>
+      <label><input type="radio" name="deliveryOption" value="retiro" checked onchange="toggleAddress()"> 🏪 Retiro por punto de encuentro</label>
       <label><input type="radio" name="deliveryOption" value="envio" onchange="toggleAddress()"> 🚚 Envío a domicilio</label>
       <div id="addressField" style="display:none;">
         <input type="text" id="customerName" placeholder="Ingresa tu Nombre Completo">

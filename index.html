@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Magnética</title>
+  <title>Demo Webix</title>
   <link rel="icon" href="https://res.cloudinary.com/dh1qqui2h/image/upload/v1761936024/Gemini_Generated_Image_q1qtakq1qtakq1qt_c9lzc7.png" type="image/jpg">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -11,6 +11,8 @@
     :root {
       --primary: #4B0D0D; /* Bordó oscuro */
       --secondary: #8B1E1E; /* Bordó claro */
+      --accent: #E94560; /* Color de acento para botones de remover/vaciar */
+      --gold-gradient: linear-gradient(45deg, #FFD700, #FFA500); /* Para títulos */
       --text-light: #ffffff;
       --text-dark: #2c2c2c;
       --background: #ffffff;
@@ -71,7 +73,7 @@
       color: var(--secondary);
     }
 
-    /* --- Sección INICIO --- */
+    /* --- Sección INICIO (Usado en el código original, aunque no tiene contenido relevante en esta versión) --- */
     #inicio {
       text-align: center;
       max-width: 900px;
@@ -86,49 +88,8 @@
       line-height: 1.8;
       white-space: pre-line;
     }
-
-    /* --- Ajustes de colores existentes --- */
-    header, .cart-float, .category-filters button.active, .category-filters button:hover {
-      background: var(--gradient);
-    }
-
-    .section-title {
-      color: var(--primary);
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Banner -->
-  <div class="banner">
-    <img src="https://res.cloudinary.com/dh1qqui2h/image/upload/v1761936024/Gemini_Generated_Image_q1qtakq1qtakq1qt_c9lzc7.png" alt="Banner Magnética">
-  </div>
-
-  <!-- Navegación -->
-  <nav>
-    <a href="#inicio">INICIO</a>
-    <a href="#productos">PRODUCTOS</a>
-  </nav>
-
-  <!-- Sección INICIO -->
-  <section id="inicio">
-    <p>
-      Hay una parte de nosotros que nadie ve, pero arde, vibra, guía.
-      Esa energía suave y poderosa que se enciende en el silencio, cuando nos miramos sin juicio.
-      Cuando elegimos vestirnos para sentir, no para cumplir.
-
-      Magnética nace ahí: en ese instante donde el deseo propio se vuelve sagrado...
-    </p>
-  </section>
-  
-    <body> { 
-      font-family: 'Inter', sans-serif; 
-      background: var(--background); 
-      color: var(--text-dark);
-      margin: 0;
-      line-height: 1.6;
-    }
-
+    
+    /* --- HEADER (Título principal de la demo) --- */
     header {
       background: var(--gradient);
       color: var(--text-light);
@@ -150,7 +111,7 @@
       opacity: 0.9;
     }
 
-    /* Sección del menú */
+    /* Sección del menú/productos */
     .section-title {
       text-align: center;
       margin: 2.5rem 0 1rem;
@@ -239,7 +200,7 @@
     .product-price {
       font-size: 1.1rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--accent); /* Usando el color de acento para el precio */
     }
 
     .product-controls {
@@ -299,7 +260,7 @@
       box-shadow: var(--card-shadow-hover);
     }
 
-    /* --- INICIO ESTILOS CARRITO (Copiados de index(4)) --- */
+    /* --- INICIO ESTILOS CARRITO (Modal) --- */
     
     .modal { 
       display: none;
@@ -415,7 +376,8 @@
       background: #f8f9fa;
       border-radius: 12px;
       transition: all 0.3s ease;
-      border-left: 4px solid var(--gold);
+      /* Usando el acento para la barra lateral */
+      border-left: 4px solid var(--accent); 
     }
 
     .cart-item:hover {
@@ -507,6 +469,7 @@
       font-size: 1rem;
       transition: border-color 0.3s ease;
       margin-top: 10px;
+      box-sizing: border-box; /* Asegura que el padding no desborde el 100% de width */
     }
 
     #addressField input:focus {
@@ -514,67 +477,108 @@
       outline: none;
     }
 
-    /* --- FIN ESTILOS CARRITO --- */
-
-    /* --- INICIO CAMBIO --- */
-    /* Se eliminaron las reglas para .product-item que cambiaban a 'column' */
+    /* Media Query para responsividad */
     @media (max-width: 600px) {
-      
       .modal-content {
         margin: 1rem;
         width: calc(100% - 2rem);
       }
+      
+      .product-item {
+        /* En pantallas pequeñas, apilamos imagen y texto para mejor visualización */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .product-item img {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 0.5rem;
+      }
+
+      .product-controls {
+        justify-content: center;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .cart-item-controls {
+        margin-top: 10px;
+      }
     }
-    /* --- FIN CAMBIO --- */
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Demo Webix</h1>
-  <p>Experiencia culinaria excepcional con los mejores sabores artesanales</p>
-</header>
-
-<section>
-  <h2 class="section-title">Nuestro Menú</h2>
-
-  <div class="category-filters">
-    <button class="active" onclick="filterProducts('all', this)">Todos</button>
-    <button onclick="filterProducts('pizzas', this)">Pizzas</button>
-    <button onclick="filterProducts('hamburguesas', this)">Hamburguesas</button>
-    <button onclick="filterProducts('bebidas', this)">Bebidas</button>
-    <button onclick="filterProducts('postres', this)">Postres</button>
+  <div class="banner" style="display:none;"> 
+    <img src="https://res.cloudinary.com/dh1qqui2h/image/upload/v1761936024/Gemini_Generated_Image_q1qtakq1qtakq1qt_c9lzc7.png" alt="Banner Magnética">
   </div>
 
-  <div id="productList" class="product-list"></div>
-</section>
+  <nav style="display:none;">
+    <a href="#inicio">INICIO</a>
+    <a href="#productos">PRODUCTOS</a>
+  </nav>
 
-<div class="cart-float" onclick="toggleCart()">🛒 $<span id="cartTotal">0</span></div>
+  <section id="inicio" style="display:none;">
+    <p>
+      Hay una parte de nosotros que nadie ve, pero arde, vibra, guía.
+      Esa energía suave y poderosa que se enciende en el silencio, cuando nos miramos sin juicio.
+      Cuando elegimos vestirnos para sentir, no para cumplir.
 
-<div class="modal" id="cartModal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="toggleCart()">✖</button>
-    <h2>Tu Pedido</h2>
-    <div id="cartItems"></div>
-    <p style="text-align: center; font-size: 1.3em; font-weight: 600; color: var(--primary); margin: 1.5rem 0;"><strong>Total: $<span id="modalTotal">0</span></strong></p>
+      Magnética nace ahí: en ese instante donde el deseo propio se vuelve sagrado...
+    </p>
+  </section>
 
-    <div class="delivery-options">
-      <h3>Opciones de Entrega</h3>
-      <label><input type="radio" name="deliveryOption" value="retiro" checked onchange="toggleAddress()"> 🏪 Retiro por local</label>
-      <label><input type="radio" name="deliveryOption" value="envio" onchange="toggleAddress()"> 🚚 Envío a domicilio</label>
-      <div id="addressField" style="display:none;">
-        <input type="text" id="customerName" placeholder="Ingresa tu Nombre Completo">
-        <input type="text" id="customerAddress" placeholder="Ingresa tu Dirección Completa">
-        <input type="text" id="customerStreets" placeholder="Ingresa Entre Calles">
-        <input type="text" id="customerPhone" placeholder="Ingresa tu Número de Teléfono">
-        <input type="text" id="customerPayment" placeholder="Ingresa el Método de Pago">
-      </div>
+  <header>
+    <h1>Demo Webix</h1>
+    <p>Experiencia culinaria excepcional con los mejores sabores artesanales</p>
+  </header>
+
+  <section id="productos">
+    <h2 class="section-title">Nuestro Menú</h2>
+
+    <div class="category-filters">
+      <button class="active" onclick="filterProducts('all', this)">Todos</button>
+      <button onclick="filterProducts('pizzas', this)">Pizzas</button>
+      <button onclick="filterProducts('hamburguesas', this)">Hamburguesas</button>
+      <button onclick="filterProducts('bebidas', this)">Bebidas</button>
+      <button onclick="filterProducts('postres', this)">Postres</button>
     </div>
 
-    <button class="clear-cart-button" onclick="clearCart()">🗑️ Vaciar carrito</button>
-    <button class="whatsapp-button" onclick="sendWhatsApp()">📱 Confirmar pedido</button>
+    <div id="productList" class="product-list"></div>
+  </section>
+
+  <div class="cart-float" onclick="toggleCart()">🛒 $<span id="cartTotal">0</span></div>
+
+  <div class="modal" id="cartModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="toggleCart()">✖</button>
+      <h2>Tu Pedido</h2>
+      <div id="cartItems"></div>
+      <p style="text-align: center; font-size: 1.3em; font-weight: 600; color: var(--primary); margin: 1.5rem 0;"><strong>Total: $<span id="modalTotal">0</span></strong></p>
+
+      <div class="delivery-options">
+        <h3>Opciones de Entrega</h3>
+        <label><input type="radio" name="deliveryOption" value="retiro" checked onchange="toggleAddress()"> 🏪 Retiro por local</label>
+        <label><input type="radio" name="deliveryOption" value="envio" onchange="toggleAddress()"> 🚚 Envío a domicilio</label>
+        <div id="addressField" style="display:none;">
+          <input type="text" id="customerName" placeholder="Ingresa tu Nombre Completo" required>
+          <input type="text" id="customerAddress" placeholder="Ingresa tu Dirección Completa" required>
+          <input type="text" id="customerStreets" placeholder="Ingresa Entre Calles" required>
+          <input type="text" id="customerPhone" placeholder="Ingresa tu Número de Teléfono" required>
+          <input type="text" id="customerPayment" placeholder="Ingresa el Método de Pago" required>
+        </div>
+      </div>
+
+      <button class="clear-cart-button" onclick="clearCart()">🗑️ Vaciar carrito</button>
+      <button class="whatsapp-button" onclick="sendWhatsApp()">📱 Confirmar pedido</button>
+    </div>
   </div>
-</div>
+
 <script>
 const products = [
   { id: 1, name: "Pizza Margherita Artesanal", price: 5500, category: "pizzas", 
@@ -597,7 +601,6 @@ const products = [
 let cart = [];
 let selectedCategory = 'all';
 
-// renderProducts se mantiene igual (de index(3))
 function renderProducts() {
   const container = document.getElementById('productList');
   container.innerHTML = '';
@@ -624,7 +627,6 @@ function renderProducts() {
   });
 }
 
-// filterProducts se mantiene igual (de index(3))
 function filterProducts(cat, btn) {
   selectedCategory = cat;
   document.querySelectorAll('.category-filters button').forEach(b => b.classList.remove('active'));
@@ -632,16 +634,12 @@ function filterProducts(cat, btn) {
   renderProducts();
 }
 
-// toggleCart se mantiene igual (de index(3))
 function toggleCart() {
   const modal = document.getElementById('cartModal');
   modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
   renderCart();
 }
 
-// --- INICIO FUNCIONES JS MODIFICADAS (de index(4)) ---
-
-// addToCart (lógica de index(4) + renderProducts() de index(3))
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   const existing = cart.find(item => item.id === id);
@@ -651,18 +649,16 @@ function addToCart(id) {
     cart.push({...product, quantity: 1});
   }
   updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
+  renderProducts(); 
 }
 
-// NUEVA función de index(4)
 function removeFromCart(id) {
   cart = cart.filter(item => item.id !== id);
   renderCart();
   updateCartTotal();
-  renderProducts(); // <-- Añadido para sincronizar
+  renderProducts(); 
 }
 
-// changeQuantity (lógica de index(4) + renderProducts() de index(3))
 function changeQuantity(id, delta) {
   const item = cart.find(i => i.id === id);
   if (!item) return;
@@ -670,28 +666,30 @@ function changeQuantity(id, delta) {
   if (item.quantity <= 0) removeFromCart(id);
   renderCart();
   updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
+  renderProducts(); 
 }
 
-// clearCart (lógica de index(4) + renderProducts() de index(3))
 function clearCart() {
   cart = [];
   renderCart();
   updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
+  renderProducts(); 
 }
 
-// NUEVA función de index(4) (reemplaza updateTotals)
 function updateCartTotal() {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   document.getElementById('cartTotal').innerText = total;
   document.getElementById('modalTotal').innerText = total;
 }
 
-// renderCart (REEMPLAZADA por la de index(4))
 function renderCart() {
   const container = document.getElementById('cartItems');
   container.innerHTML = '';
+  if (cart.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:#555;">El carrito está vacío.</p>';
+    return;
+  }
+
   cart.forEach(item => {
     const div = document.createElement('div');
     div.className = 'cart-item';
@@ -709,13 +707,11 @@ function renderCart() {
   });
 }
 
-// toggleAddress (REEMPLAZADA por la de index(4))
 function toggleAddress() {
   const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
   document.getElementById('addressField').style.display = deliveryOption === 'envio' ? 'block' : 'none';
 }
 
-// sendWhatsApp (REEMPLAZADA por la de index(4))
 function sendWhatsApp() {
   if (cart.length === 0) {
     alert('Tu carrito está vacío.');
@@ -753,11 +749,11 @@ function sendWhatsApp() {
   message += `\n *Total:* $${cart.reduce((sum, i) => sum + i.price * i.quantity, 0)}`;
   message += `\n *Opción:* ${deliveryOption === 'retiro' ? 'Retiro por local' : 'Envío a domicilio'}${addressText}`;
 
+  // Número de ejemplo de WhatsApp. Asegúrate de cambiarlo por el número real.
+  const whatsappNumber = '5493541294944'; 
   const encodedMessage = encodeURIComponent(message);
-  window.open(`https://wa.me/5493541294944?text=${encodedMessage}`, '_blank');
+  window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
 }
-
-// --- FIN FUNCIONES JS MODIFICADAS ---
 
   // Inicialización
   renderProducts();

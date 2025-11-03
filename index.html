@@ -17,6 +17,8 @@
       --card-shadow: 0 6px 24px rgba(0,0,0,0.1);
       --card-shadow-hover: 0 10px 32px rgba(0,0,0,0.15);
       --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --accent: #E94560; /* Rojo/Rosado para botones de remover/vaciar (usado en el código JS anterior) */
+      --gold: #FFD700; /* Dorado para borde en cart-item */
     }
 
     body { 
@@ -95,40 +97,7 @@
     .section-title {
       color: var(--primary);
     }
-  </style>
-</head>
-<body>
-
-  <!-- Banner -->
-  <div class="banner">
-    <img src="https://res.cloudinary.com/dh1qqui2h/image/upload/v1761936024/Gemini_Generated_Image_q1qtakq1qtakq1qt_c9lzc7.png" alt="Banner Magnética">
-  </div>
-
-  <!-- Navegación -->
-  <nav>
-    <a href="#inicio">INICIO</a>
-    <a href="#productos">PRODUCTOS</a>
-  </nav>
-
-  <!-- Sección INICIO -->
-  <section id="inicio">
-    <p>
-      Hay una parte de nosotros que nadie ve, pero arde, vibra, guía.
-      Esa energía suave y poderosa que se enciende en el silencio, cuando nos miramos sin juicio.
-      Cuando elegimos vestirnos para sentir, no para cumplir.
-
-      Magnética nace ahí: en ese instante donde el deseo propio se vuelve sagrado...
-    </p>
-  </section>
-  
-    <style> { 
-      font-family: 'Inter', sans-serif; 
-      background: var(--background); 
-      color: var(--text-dark);
-      margin: 0;
-      line-height: 1.6;
-    }
-
+    
     header {
       background: var(--gradient);
       color: var(--text-light);
@@ -140,7 +109,6 @@
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
-      background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -211,12 +179,19 @@
       box-shadow: var(--card-shadow-hover);
     }
 
+    /* Imagen del producto en la lista: Ahora es cliqueable */
     .product-item img {
       width: 120px;
       height: 120px;
       border-radius: 12px;
       object-fit: cover;
       flex-shrink: 0;
+      cursor: pointer; /* Indica que se puede hacer clic */
+      transition: opacity 0.3s ease;
+    }
+    
+    .product-item img:hover {
+        opacity: 0.8;
     }
 
     .product-details {
@@ -239,7 +214,7 @@
     .product-price {
       font-size: 1.1rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--primary); 
     }
 
     .product-controls {
@@ -248,6 +223,37 @@
       gap: 0.5rem;
       margin-top: 0.5rem;
     }
+    
+    /* --- Estilos para la selección de talle --- */
+    .size-selector {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+        align-items: center;
+    }
+
+    .size-selector label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+    }
+
+    .size-selector select {
+        padding: 6px 10px;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        background-color: #f7f7f7;
+        color: var(--text-dark);
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    .size-selector select:focus {
+        border-color: var(--secondary);
+    }
+    /* --- Fin Estilos para talle --- */
 
     .product-controls button {
       padding: 6px 12px;
@@ -258,25 +264,24 @@
       transition: all 0.2s ease;
       font-size: 1rem;
     }
-
-    .btn-minus {
-      background: #ffc107;
-      color: black;
-    }
-
-    .btn-plus {
-      background: #28a745;
+    
+    .btn-add-to-cart {
+      background: var(--primary);
       color: white;
+      margin-left: auto;
     }
 
-    .btn-minus:hover { background: #ffb300; }
-    .btn-plus:hover { background: #218838; }
+    .btn-add-to-cart:hover { 
+      background: var(--secondary);
+      transform: translateY(-1px);
+    }
 
+    .product-controls .btn-minus, 
+    .product-controls .btn-plus,
     .product-controls span {
-      min-width: 20px;
-      text-align: center;
-      font-weight: 600;
+      display: none !important;
     }
+
 
     /* Botón flotante del carrito */
     .cart-float { 
@@ -299,7 +304,7 @@
       box-shadow: var(--card-shadow-hover);
     }
 
-    /* --- INICIO ESTILOS CARRITO (Copiados de index(4)) --- */
+    /* --- ESTILOS MODAL BASE (CARRITO) --- */
     
     .modal { 
       display: none;
@@ -360,12 +365,70 @@
       font-size: 18px;
       cursor: pointer;
       transition: all 0.3s ease;
+      z-index: 10; /* Para estar encima del carrusel en el modal de galería */
     }
 
     .close-modal:hover {
       background: #d63447;
       transform: rotate(90deg);
     }
+    
+    /* --- INICIO ESTILOS GALERÍA --- */
+    #galleryModal .modal-content {
+        max-width: 800px;
+        padding: 0; /* Quitamos padding para que la imagen ocupe todo */
+        max-height: 95vh;
+        overflow: hidden;
+    }
+    
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        max-height: 95vh;
+        overflow: hidden;
+    }
+    
+    .carousel-item {
+        display: none;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .carousel-item.active {
+        display: block;
+    }
+    
+    .carousel-item img {
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        object-fit: contain; /* Asegura que la imagen se vea completa */
+        border-radius: 20px; /* Hereda del modal, pero puede ser ajustado */
+    }
+    
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 15px;
+        cursor: pointer;
+        font-size: 24px;
+        z-index: 5;
+        transition: background 0.3s;
+    }
+
+    .carousel-control:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    
+    #prevBtn { left: 0; border-radius: 0 5px 5px 0; }
+    #nextBtn { right: 0; border-radius: 5px 0 0 5px; }
+    /* --- FIN ESTILOS GALERÍA --- */
+    
+    /* El resto de estilos del carrito se mantienen sin cambios mayores */
 
     /* Botones Modal */
     .whatsapp-button, .add-cart, .clear-cart-button { 
@@ -427,6 +490,13 @@
       flex: 1;
       font-weight: 500;
     }
+    
+    .cart-item-info small {
+        display: block;
+        font-weight: 400;
+        color: #777;
+        margin-top: 2px;
+    }
 
     .cart-item-controls { 
       display: flex;
@@ -444,7 +514,6 @@
       min-width: 32px;
     }
 
-    /* Sobrescribimos btn-minus/plus para el carrito si es necesario */
     .cart-item-controls .btn-minus {
       background: #ffc107;
       color: black;
@@ -514,21 +583,42 @@
       outline: none;
     }
 
-    /* --- FIN ESTILOS CARRITO --- */
-
-    /* --- INICIO CAMBIO --- */
-    /* Se eliminaron las reglas para .product-item que cambiaban a 'column' */
     @media (max-width: 600px) {
-      
       .modal-content {
         margin: 1rem;
         width: calc(100% - 2rem);
       }
+      #galleryModal .modal-content {
+        max-width: 100%;
+        margin: 0;
+        max-height: 100vh;
+        border-radius: 0;
+      }
     }
-    /* --- FIN CAMBIO --- */
   </style>
+</head>
+<body>
+
+  <div class="banner">
+    <img src="https://res.cloudinary.com/dh1qqui2h/image/upload/v1761936024/Gemini_Generated_Image_q1qtakq1qtakq1qt_c9lzc7.png" alt="Banner Magnética">
+  </div>
+
+  <nav>
+    <a href="#inicio">INICIO</a>
+    <a href="#productos">PRODUCTOS</a>
+  </nav>
+
+  <section id="inicio">
+    <p>
+      Hay una parte de nosotros que nadie ve, pero arde, vibra, guía.
+      Esa energía suave y poderosa que se enciende en el silencio, cuando nos miramos sin juicio.
+      Cuando elegimos vestirnos para sentir, no para cumplir.
+
+      Magnética nace ahí: en ese instante donde el deseo propio se vuelve sagrado...
+    </p>
+  </section>
   
-<section>
+<section id="productos">
   <h2 class="section-title">Nuestros Productos</h2>
 
   <div class="category-filters">
@@ -542,6 +632,18 @@
 </section>
 
 <div class="cart-float" onclick="toggleCart()">🛒 $<span id="cartTotal">0</span></div>
+
+<div class="modal" id="galleryModal" onclick="if(event.target.id === 'galleryModal') closeGalleryModal()">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeGalleryModal()">✖</button>
+        <div class="carousel-container">
+            <div id="carouselImages">
+                </div>
+            <button class="carousel-control" id="prevBtn" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="carousel-control" id="nextBtn" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+    </div>
+</div>
 
 <div class="modal" id="cartModal">
   <div class="modal-content">
@@ -575,7 +677,12 @@ const products = [
     price: 15500,
     category: "Lencería",
     sizes: ["105"],
-    images: ["https://res.cloudinary.com/dh1qqui2h/image/upload/v1762196794/CONJUNTO_KIKI_sd7is3.jpg"],
+    // Se agregaron más imágenes para probar la galería
+    images: [
+        "https://res.cloudinary.com/dh1qqui2h/image/upload/v1762196794/CONJUNTO_KIKI_sd7is3.jpg",
+        "https://res.cloudinary.com/dh1qqui2h/image/upload/v1762196794/CONJUNTO_KIKI_sd7is3.jpg", // Foto 2 (ejemplo)
+        "https://res.cloudinary.com/dh1qqui2h/image/upload/v1762196794/CONJUNTO_KIKI_sd7is3.jpg"  // Foto 3 (ejemplo)
+    ],
   },
   {
     id: 2,
@@ -583,7 +690,10 @@ const products = [
     price: 15500,
     category: "Lencería",
     sizes: ["90", "100"],
-    images: ["https://res.cloudinary.com/dh1qqui2h/image/upload/v1762197484/CONJUNTO_HOT_byqvvt.jpg"],
+    images: [
+        "https://res.cloudinary.com/dh1qqui2h/image/upload/v1762197484/CONJUNTO_HOT_byqvvt.jpg",
+        "https://res.cloudinary.com/dh1qqui2h/image/upload/v1762197484/CONJUNTO_HOT_byqvvt.jpg", // Foto 2 (ejemplo)
+    ],
   },
   {
     id: 3,
@@ -630,26 +740,38 @@ const products = [
 let cart = [];
 let selectedCategory = 'all';
 
-// renderProducts se mantiene igual (de index(3))
+// Variables para la galería
+let currentImages = [];
+let currentSlide = 0;
+
+// renderProducts MODIFICADA para que la imagen tenga el onclick
 function renderProducts() {
   const container = document.getElementById('productList');
   container.innerHTML = '';
   const filtered = selectedCategory === 'all' ? products : products.filter(p => p.category === selectedCategory);
 
   filtered.forEach(p => {
-    const quantity = cart.find(i => i.id === p.id)?.quantity || 0;
+    // Generar opciones de talle
+    const sizeOptions = p.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
+
     const div = document.createElement('div');
     div.className = 'product-item';
     div.innerHTML = `
-      <img src="${p.images[0]}" alt="${p.name}">
+      <img src="${p.images[0]}" alt="${p.name}" onclick="openGalleryModal(${p.id})">
       <div class="product-details">
         <h3>${p.name}</h3>
-        <p class="desc">${p.description}</p>
+        <p class="desc">${p.description || ''}</p>
         <div class="product-price">$${p.price}</div>
+        
+        <div class="size-selector">
+            <label for="size-${p.id}">Talle:</label>
+            <select id="size-${p.id}">
+                ${sizeOptions}
+            </select>
+        </div>
+
         <div class="product-controls">
-          <button class="btn-minus" onclick="changeQuantity(${p.id}, -1)">−</button>
-          <span>${quantity}</span>
-          <button class="btn-plus" onclick="addToCart(${p.id})">+</button>
+          <button class="btn-add-to-cart" onclick="addToCart(${p.id})">Añadir al Carrito</button>
         </div>
       </div>
     `;
@@ -657,7 +779,69 @@ function renderProducts() {
   });
 }
 
-// filterProducts se mantiene igual (de index(3))
+// --- FUNCIONES DE GALERÍA (NUEVAS) ---
+
+function openGalleryModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product || product.images.length === 0) return;
+
+    currentImages = product.images;
+    currentSlide = 0;
+    
+    // Muestra el modal
+    document.getElementById('galleryModal').style.display = 'flex';
+    
+    renderCarousel();
+}
+
+function closeGalleryModal() {
+    document.getElementById('galleryModal').style.display = 'none';
+}
+
+function renderCarousel() {
+    const carousel = document.getElementById('carouselImages');
+    carousel.innerHTML = '';
+
+    currentImages.forEach((imgSrc, index) => {
+        const div = document.createElement('div');
+        div.className = 'carousel-item';
+        if (index === currentSlide) {
+            div.classList.add('active');
+        }
+        div.innerHTML = `<img src="${imgSrc}" alt="Imagen ${index + 1} de Galería">`;
+        carousel.appendChild(div);
+    });
+
+    // Oculta/Muestra controles si solo hay una imagen
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (currentImages.length > 1) {
+        prevBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
+    } else {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
+}
+
+function changeSlide(direction) {
+    // Calcula el nuevo índice
+    currentSlide += direction;
+
+    // Lógica para que el carrusel sea infinito
+    if (currentSlide < 0) {
+        currentSlide = currentImages.length - 1;
+    } else if (currentSlide >= currentImages.length) {
+        currentSlide = 0;
+    }
+    
+    renderCarousel();
+}
+
+// --- FIN FUNCIONES DE GALERÍA ---
+
+
 function filterProducts(cat, btn) {
   selectedCategory = cat;
   document.querySelectorAll('.category-filters button').forEach(b => b.classList.remove('active'));
@@ -665,90 +849,101 @@ function filterProducts(cat, btn) {
   renderProducts();
 }
 
-// toggleCart se mantiene igual (de index(3))
 function toggleCart() {
   const modal = document.getElementById('cartModal');
   modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
   renderCart();
 }
 
-// --- INICIO FUNCIONES JS MODIFICADAS (de index(4)) ---
-
-// addToCart (lógica de index(4) + renderProducts() de index(3))
 function addToCart(id) {
   const product = products.find(p => p.id === id);
-  const existing = cart.find(item => item.id === id);
+  const sizeSelect = document.getElementById(`size-${id}`);
+  
+  if (!sizeSelect || sizeSelect.value === "") {
+    alert("Por favor, selecciona un talle.");
+    return;
+  }
+  
+  const selectedSize = sizeSelect.value;
+  
+  const existing = cart.find(item => item.id === id && item.size === selectedSize);
+  
   if (existing) {
     existing.quantity++;
   } else {
-    cart.push({...product, quantity: 1});
+    cart.push({...product, quantity: 1, size: selectedSize});
   }
+  
   updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
+  alert(`¡${product.name} (Talle: ${selectedSize}) añadido al carrito!`);
 }
 
-// NUEVA función de index(4)
-function removeFromCart(id) {
-  cart = cart.filter(item => item.id !== id);
+function removeFromCart(id, size) {
+  const index = cart.findIndex(item => item.id === id && item.size === size);
+  if (index > -1) {
+    cart.splice(index, 1);
+  }
   renderCart();
   updateCartTotal();
-  renderProducts(); // <-- Añadido para sincronizar
 }
 
-// changeQuantity (lógica de index(4) + renderProducts() de index(3))
-function changeQuantity(id, delta) {
-  const item = cart.find(i => i.id === id);
+function changeQuantity(id, size, delta) {
+  const item = cart.find(i => i.id === id && i.size === size);
   if (!item) return;
+  
   item.quantity += delta;
-  if (item.quantity <= 0) removeFromCart(id);
-  renderCart();
-  updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
+  
+  if (item.quantity <= 0) {
+    removeFromCart(id, size);
+  } else {
+    renderCart();
+    updateCartTotal();
+  }
 }
 
-// clearCart (lógica de index(4) + renderProducts() de index(3))
 function clearCart() {
   cart = [];
   renderCart();
   updateCartTotal();
-  renderProducts(); // <-- Mantenemos esto de index(3)
 }
 
-// NUEVA función de index(4) (reemplaza updateTotals)
 function updateCartTotal() {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   document.getElementById('cartTotal').innerText = total;
   document.getElementById('modalTotal').innerText = total;
 }
 
-// renderCart (REEMPLAZADA por la de index(4))
 function renderCart() {
   const container = document.getElementById('cartItems');
   container.innerHTML = '';
+  if (cart.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #777;">El carrito está vacío.</p>';
+  }
+  
   cart.forEach(item => {
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
       <div class="cart-item-info">
-        ${item.name} <br> $${item.price} x ${item.quantity}
+        ${item.name} <br>
+        <small>Talle: ${item.size}</small>
+        <p>$${item.price} x ${item.quantity}</p>
       </div>
       <div class="cart-item-controls">
-        <button class="btn-minus" onclick="changeQuantity(${item.id}, -1)">-</button>
-        <button class="btn-plus" onclick="changeQuantity(${item.id}, 1)">+</button>
-        <button class="btn-remove" onclick="removeFromCart(${item.id})">x</button>
+        <button class="btn-minus" onclick="changeQuantity(${item.id}, '${item.size}', -1)">-</button>
+        <button class="btn-plus" onclick="changeQuantity(${item.id}, '${item.size}', 1)">+</button>
+        <button class="btn-remove" onclick="removeFromCart(${item.id}, '${item.size}')">x</button>
       </div>
     `;
     container.appendChild(div);
   });
 }
 
-// toggleAddress (REEMPLAZADA por la de index(4))
 function toggleAddress() {
   const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
   document.getElementById('addressField').style.display = deliveryOption === 'envio' ? 'block' : 'none';
 }
 
-// sendWhatsApp (REEMPLAZADA por la de index(4))
 function sendWhatsApp() {
   if (cart.length === 0) {
     alert('Tu carrito está vacío.');
@@ -781,7 +976,7 @@ function sendWhatsApp() {
 
   let message = ' *Nuevo pedido desde la web:*\n\n';
   cart.forEach(item => {
-    message += `${item.quantity} x ${item.name} - $${item.price * item.quantity}\n`;
+    message += `${item.quantity} x ${item.name} (Talle: ${item.size}) - $${item.price * item.quantity}\n`;
   });
   message += `\n *Total:* $${cart.reduce((sum, i) => sum + i.price * i.quantity, 0)}`;
   message += `\n *Opción:* ${deliveryOption === 'retiro' ? 'Retiro por local' : 'Envío a domicilio'}${addressText}`;
@@ -789,8 +984,6 @@ function sendWhatsApp() {
   const encodedMessage = encodeURIComponent(message);
   window.open(`https://wa.me/5493541294944?text=${encodedMessage}`, '_blank');
 }
-
-// --- FIN FUNCIONES JS MODIFICADAS ---
 
   // Inicialización
   renderProducts();
